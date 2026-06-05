@@ -1,0 +1,39 @@
+# ── Secrets ───────────────────────────────────────────────────
+.env
+
+# ── Data (user uploads — don't commit client data) ───────────
+data/*.csv
+!data/sample.csv
+
+# ── Python ───────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Conda / venv ─────────────────────────────────────────────
+.conda/
+*.egg
+*.whl
+
+# ── PyMC model artefacts ─────────────────────────────────────
+*.nc
+*.netcdf
+trace/
+
+# ── IDE ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ── Streamlit ────────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── Testing ──────────────────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage

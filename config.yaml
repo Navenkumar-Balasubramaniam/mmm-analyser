@@ -1,0 +1,49 @@
+# ──────────────────────────────────────────────────────────────
+# MMM Analyser — Application Configuration
+# ──────────────────────────────────────────────────────────────
+# Non-secret settings. API keys go in .env (never commit .env).
+# ──────────────────────────────────────────────────────────────
+
+# ── CSV template spec ────────────────────────────────────────
+csv_template:
+  required_columns:
+    - date_week
+    - revenue
+  spend_prefix: "spend_"          # columns starting with this are treated as channels
+  control_columns:                # optional — included in model if present
+    - promo_flag
+    - holiday_flag
+  date_format: "%Y-%m-%d"
+  min_rows: 52                    # minimum 1 year of weekly data
+
+# ── PyMC model settings ─────────────────────────────────────
+model:
+  sampler: "nuts"
+  draws: 2000                     # MCMC samples per chain
+  tune: 1000                      # warm-up samples (discarded)
+  chains: 4                       # parallel chains
+  target_accept: 0.9              # NUTS acceptance rate
+  adstock_type: "geometric"       # geometric | weibull
+  saturation_type: "logistic"     # logistic | hill
+
+# ── Budget optimiser ────────────────────────────────────────
+optimiser:
+  method: "SLSQP"                 # scipy.optimize method
+  allow_zero_channels: false      # can a channel be zeroed out?
+  min_channel_share: 0.05         # minimum 5% per channel
+  max_channel_share: 0.60         # maximum 60% per channel
+
+# ── LLM agent ───────────────────────────────────────────────
+agent:
+  provider: "openrouter"
+  base_url: "https://openrouter.ai/api/v1"
+  model: "meta-llama/llama-3.1-70b-instruct:free"
+  max_tokens: 2000
+  temperature: 0.2                # low temp = factual, less creative
+  fallback_message: "I can only answer based on the analyses run on your data. This question falls outside the available context."
+
+# ── Data quality thresholds ──────────────────────────────────
+validation:
+  max_cv_warning: 1.0             # warn if coefficient of variation exceeds this
+  max_missing_pct: 0.05           # fail if >5% values missing
+  max_zero_spend_pct: 0.30        # warn if >30% weeks have zero spend for a channel
