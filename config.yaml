@@ -37,7 +37,7 @@ optimiser:
 agent:
   provider: "openrouter"
   base_url: "https://openrouter.ai/api/v1"
-  model: "meta-llama/llama-3.1-70b-instruct:free"
+  model: "nvidia/nemotron-3-super-120b-a12b:free"
   max_tokens: 2000
   temperature: 0.2                # low temp = factual, less creative
   fallback_message: "I can only answer based on the analyses run on your data. This question falls outside the available context."
